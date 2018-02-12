@@ -1,0 +1,166 @@
+	.section	__TEXT,__text,regular,pure_instructions
+	.macosx_version_min 10, 13
+	.globl	_process
+	.p2align	4, 0x90
+_process:                               ## @process
+	.cfi_startproc
+## BB#0:
+	pushq	%rbp
+Lcfi0:
+	.cfi_def_cfa_offset 16
+Lcfi1:
+	.cfi_offset %rbp, -16
+	movq	%rsp, %rbp
+Lcfi2:
+	.cfi_def_cfa_register %rbp
+	subq	$32, %rsp
+	leaq	L_.str(%rip), %rax
+	movl	%edi, -4(%rbp)
+	movl	%esi, -8(%rbp)
+	movl	-4(%rbp), %esi
+	movq	%rax, %rdi
+	movb	$0, %al
+	callq	_printf
+	movl	-8(%rbp), %edi
+	movl	%eax, -12(%rbp)         ## 4-byte Spill
+	callq	_sleep
+	cmpl	$1, -8(%rbp)
+	movl	%eax, -16(%rbp)         ## 4-byte Spill
+	jne	LBB0_2
+## BB#1:
+	leaq	L_.str.1(%rip), %rdi
+	movl	-4(%rbp), %esi
+	movl	-8(%rbp), %edx
+	movb	$0, %al
+	callq	_printf
+	movl	%eax, -20(%rbp)         ## 4-byte Spill
+	jmp	LBB0_3
+LBB0_2:
+	leaq	L_.str.2(%rip), %rdi
+	movl	-4(%rbp), %esi
+	movl	-8(%rbp), %edx
+	movb	$0, %al
+	callq	_printf
+	movl	%eax, -24(%rbp)         ## 4-byte Spill
+LBB0_3:
+	addq	$32, %rsp
+	popq	%rbp
+	retq
+	.cfi_endproc
+
+	.globl	_execute
+	.p2align	4, 0x90
+_execute:                               ## @execute
+	.cfi_startproc
+## BB#0:
+	pushq	%rbp
+Lcfi3:
+	.cfi_def_cfa_offset 16
+Lcfi4:
+	.cfi_offset %rbp, -16
+	movq	%rsp, %rbp
+Lcfi5:
+	.cfi_def_cfa_register %rbp
+	subq	$16, %rsp
+	movl	%edi, -4(%rbp)
+	movl	%esi, -8(%rbp)
+	callq	_fork
+	movq	_p@GOTPCREL(%rip), %rcx
+	movslq	-4(%rbp), %rdx
+	movl	%eax, (%rcx,%rdx,4)
+	movslq	-4(%rbp), %rdx
+	cmpl	$0, (%rcx,%rdx,4)
+	jne	LBB1_2
+## BB#1:
+	movl	-4(%rbp), %edi
+	movl	-8(%rbp), %esi
+	callq	_process
+	xorl	%edi, %edi
+	callq	_exit
+LBB1_2:
+	addq	$16, %rsp
+	popq	%rbp
+	retq
+	.cfi_endproc
+
+	.globl	_main
+	.p2align	4, 0x90
+_main:                                  ## @main
+	.cfi_startproc
+## BB#0:
+	pushq	%rbp
+Lcfi6:
+	.cfi_def_cfa_offset 16
+Lcfi7:
+	.cfi_offset %rbp, -16
+	movq	%rsp, %rbp
+Lcfi8:
+	.cfi_def_cfa_register %rbp
+	subq	$32, %rsp
+	xorl	%edi, %edi
+	movl	$1, %esi
+	movl	$0, -4(%rbp)
+	callq	_execute
+	movl	$2, %edi
+	movl	$3, %esi
+	callq	_execute
+	xorl	%esi, %esi
+                                        ## kill: %RSI<def> %ESI<kill>
+	xorl	%edx, %edx
+	movq	_p@GOTPCREL(%rip), %rax
+	movl	(%rax), %edi
+	callq	_waitpid
+	movl	$1, %edi
+	movl	$2, %esi
+	movl	%eax, -8(%rbp)          ## 4-byte Spill
+	callq	_execute
+	movl	$4, %edi
+	movl	$3, %esi
+	callq	_execute
+	xorl	%eax, %eax
+	movl	%eax, %esi
+	xorl	%edx, %edx
+	movq	_p@GOTPCREL(%rip), %rcx
+	movl	4(%rcx), %edi
+	callq	_waitpid
+	movl	$3, %edi
+	movl	$2, %esi
+	movl	%eax, -12(%rbp)         ## 4-byte Spill
+	callq	_execute
+	xorl	%eax, %eax
+	movl	%eax, %esi
+	xorl	%edx, %edx
+	movq	_p@GOTPCREL(%rip), %rcx
+	movl	16(%rcx), %edi
+	callq	_waitpid
+	movl	$5, %edi
+	movl	$3, %esi
+	movl	%eax, -16(%rbp)         ## 4-byte Spill
+	callq	_execute
+	xorl	%eax, %eax
+	movl	%eax, %esi
+	xorl	%edx, %edx
+	movq	_p@GOTPCREL(%rip), %rcx
+	movl	20(%rcx), %edi
+	callq	_waitpid
+	xorl	%edx, %edx
+	movl	%eax, -20(%rbp)         ## 4-byte Spill
+	movl	%edx, %eax
+	addq	$32, %rsp
+	popq	%rbp
+	retq
+	.cfi_endproc
+
+	.section	__TEXT,__cstring,cstring_literals
+L_.str:                                 ## @.str
+	.asciz	"Prosess %d kj\303\270rer\n"
+
+L_.str.1:                               ## @.str.1
+	.asciz	"Prosess %d kj\303\270rte i %d sekund\n"
+
+L_.str.2:                               ## @.str.2
+	.asciz	"Prosess %d kj\303\270rte i %d sekunder\n"
+
+	.comm	_p,24,4                 ## @p
+
+.subsections_via_symbols
