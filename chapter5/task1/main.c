@@ -8,12 +8,13 @@
 
 const int NUMBER_OF_THREADS = 6;
 
-sem_t empty = 3;            /* empty: How many empty buffer slots */
+sem_t empty;            /* empty: How many empty buffer slots */
 // sem_t full = 1;             /* full: How many full buffer slots */
-sem_t b = 0;                /* b: binary, used as a mutex */
+sem_t b;                /* b: binary, used as a mutex */
 
 // Globals
-pthread_t threads[NUMBER_OF_THREADS];
+pthread_t threads[6];
+
 int increment = 0;
 
 struct threadArgs {
