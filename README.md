@@ -20,3 +20,6 @@
   
 **Chapter 5 - task b**
   *- Producers and consumers*
+
+
+***Note that program will only compile on a linux based platform***
