@@ -52,5 +52,6 @@ int main(void) {
   execute(5, 6);
 
   for(int j=0;j<NUMBER_OF_THREADS;j++) pthread_join(threads[j], NULL);
+  
   return 0;
 }
