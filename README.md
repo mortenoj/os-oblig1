@@ -12,14 +12,11 @@
 
 ### Task completed:
 
-*Chapter 4 - task b*
-
-  **- Processes and synchronization**
+**Chapter 4 - task b**
+  *- Processes and synchronization*
   
-*Chapter 5 - task a*
-
-  **- Threading and semaphore synchronization**
+**Chapter 5 - task a**
+  *- Threading and semaphore synchronization*
   
-*Chapter 5 - task b*
-
-  **- Producers and consumers**
+**Chapter 5 - task b**
+  *- Producers and consumers*
