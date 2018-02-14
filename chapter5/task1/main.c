@@ -16,6 +16,7 @@ struct threadArgs {
   int time;
 };
 
+// Function for the threads to run
 void *process(void *args) {
   sem_wait(&cap); // Decrements available buffer spots until 0
 
@@ -32,13 +33,16 @@ void *process(void *args) {
   return NULL;
 }
 
+// Function that spawns threads and passes down
+// the time and num to the individual threads.
 void execute(int num, int time) {
   struct threadArgs *args = malloc(sizeof(struct threadArgs));
-  args->num  = num;
-  args->time = time;
+  args->num  = num; // Threads id
+  args->time = time; // Amount of time for the process to run
 
+  // Spawns thread
   int status = pthread_create(&threads[num], NULL, process, args);
-
+  // If spawning thread fails
   if (status != 0) {
     printf("Oops. pthread create returned error code %d\n", status);
     exit(EXIT_FAILURE);
@@ -58,6 +62,7 @@ int main(void) {
   execute(0, 1);
   execute(2, 3);
 
+  // Waits for process 0 to finish before executing 1 and 4
   joinThread(0);
   execute(1, 2);
   execute(4, 3);
@@ -70,6 +75,7 @@ int main(void) {
 
   joinThread(5);
 
+  // Destroy semaphore
   sem_destroy(&cap);
   return 0;
 }

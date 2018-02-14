@@ -14,9 +14,11 @@ void createThreads(int num);
 void createSpecificThreads(int producer, int consumer);
 void joinThreads(void);
 
+// Global pool of threads for producers and consumers
 pthread_t *producers;
 pthread_t *consumers;
 
+// Global variables
 int numOfProducers;
 int numOfConsumers;
 
@@ -34,15 +36,18 @@ int main(int argc, char const **argv) {
   sem_init(&full, SHARED, 0);
   sem_init(&b, SHARED, 1);
 
+  // Checks how many arguments was passed in
   switch(argc) {
     case 2:
+      // Creates the amount of threads passed down as flag
       createThreads(atoi(argv[1]));
       break;
     default:
       createThreads(1);
       break;
   };
-  
+
+  // Joins all threads
   joinThreads();
 
 	printf("main done\n");
@@ -50,14 +55,18 @@ int main(int argc, char const **argv) {
 	return 0;
 }
 
-
+// spawn threads for producers and consumers
 void createThreads(int num) {
+  // Allocates an appropriate amount of memory for the
+  // producers and consumers
   producers = malloc(num*sizeof(pthread_t));
   consumers = malloc(num*sizeof(pthread_t));
 
+  // Sets num of producers and consumers to the specified amount
   numOfProducers = num;
   numOfConsumers = num;
 
+  // Creates the correct amount of threads
   int i;
   for(i = 0; i < num; ++i) {
     int *id = malloc(sizeof(int));
@@ -67,17 +76,20 @@ void createThreads(int num) {
   }
 }
 
+// Joins all threads
 void joinThreads(void) {
   int i;
+  // Joins producer threads
   for(i = 0; i < numOfProducers; ++i) {
     pthread_join(producers[i], NULL);
   };
+  // Joins consumer threads
   for(i = 0; i < numOfConsumers; ++i) {
     pthread_join(consumers[i], NULL);
   };
 }
 
-
+// Producers function
 void *Producer(void *arg) {
 	int i=0, j, id = *(int*)arg;
 
@@ -115,7 +127,7 @@ void *Producer(void *arg) {
 	return 0;
 }
 
-
+// Consumer function
 void *Consumer(void *arg) {
 	int i=0, j, id = *(int*)arg;
 
