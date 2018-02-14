@@ -30,6 +30,7 @@ void *process(void *args) {
   if(a.time == 1) printf("Prosess %d kjørte i %d sekund\n", a.num, a.time);
   else printf("Prosess %d kjørte i %d sekunder\n", a.num, a.time);
 
+  free(sizeof(struct threadArgs));
   return NULL;
 }
 
@@ -78,4 +79,5 @@ int main(void) {
   // Destroy semaphore
   sem_destroy(&cap);
   return 0;
+
 }
